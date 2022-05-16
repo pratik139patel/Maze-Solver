@@ -1,3 +1,4 @@
+package src;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
@@ -16,23 +17,36 @@ import javax.swing.JMenuBar;
 import java.awt.Color;
 import java.awt.Dimension;
 
-public class Maze_solver 
+public class MazeSolver 
 {
-    public static void main(String[] Args) { new Maze_solver(); }
-
     private JFrame main_frame;
-    private Maze_solver()
+
+    public MazeSolver()
     {
-        main_frame = new JFrame("Main Menu"); main_frame.setIconImage((new ImageIcon("Pratik Patel.jpg")).getImage());
-        main_frame.setLayout(new GridBagLayout()); GridBagConstraints constraints = new GridBagConstraints();
+        GridBagConstraints constraints = new GridBagConstraints();
+        JLabel empty_label = new JLabel(); 
+        JTextField cols_field = new JTextField(2); 
+        JTextField rows_field = new JTextField(2);
+        JButton create_maze_btn = new JButton("Create"); 
+        JButton exit_btn = new JButton("Exit"); 
+        JTextField error_bar = new JTextField(); 
 
-        JLabel empty_label = new JLabel(); empty_label.setPreferredSize(new Dimension(30, empty_label.getPreferredSize().height));
-        constraints.insets = new Insets(5, 5, 5, 5); main_frame.add(empty_label, constraints);
-        constraints.gridx = 1; main_frame.add(new JLabel("ROWS:"), constraints);
-        constraints.gridx = 2; main_frame.add(new JLabel("COLS:"), constraints);
+        main_frame = new JFrame("Main Menu"); 
+        main_frame.setIconImage((new ImageIcon("img/pratik-patel.jpeg")).getImage());
+        main_frame.setLayout(new GridBagLayout()); 
+        
+        empty_label.setPreferredSize(new Dimension(30, empty_label.getPreferredSize().height));
+        constraints.insets = new Insets(5, 5, 5, 5);
+        main_frame.add(empty_label, constraints);
+        constraints.gridx = 1; 
+        main_frame.add(new JLabel("ROWS:"), constraints);
+        constraints.gridx = 2; 
+        main_frame.add(new JLabel("COLS:"), constraints);
 
-        JTextField cols_field = new JTextField(2); constraints.gridy = 1; main_frame.add(cols_field, constraints); 
-        JTextField rows_field = new JTextField(2); constraints.gridx = 1; main_frame.add(rows_field, constraints);
+        constraints.gridy = 1; 
+        main_frame.add(cols_field, constraints); 
+        constraints.gridx = 1; 
+        main_frame.add(rows_field, constraints);
 
         cols_field.addFocusListener(new FocusListener() 
         {
@@ -46,14 +60,42 @@ public class Maze_solver
             @Override public void focusLost(FocusEvent e) {}
         });
 
-        JButton create_maze_btn = new JButton("Create"); constraints.gridy = 2; create_maze_btn.setPreferredSize(new Dimension(82,create_maze_btn.getPreferredSize().height)); main_frame.add(create_maze_btn, constraints); 
-        JButton exit_btn = new JButton("Exit"); constraints.gridx = 2; exit_btn.setPreferredSize(create_maze_btn.getPreferredSize()); main_frame.add(exit_btn, constraints);
+        constraints.gridy = 2; 
+        create_maze_btn.setPreferredSize(new Dimension(82, create_maze_btn.getPreferredSize().height));
+        main_frame.add(create_maze_btn, constraints); 
+        constraints.gridx = 2; 
+        exit_btn.setPreferredSize(create_maze_btn.getPreferredSize()); 
+        main_frame.add(exit_btn, constraints);
 
-        JTextField error_bar = new JTextField(); error_bar.setPreferredSize(new Dimension(255, error_bar.getPreferredSize().height)); error_bar.setBackground(Color.RED); error_bar.setEnabled(false); error_bar.setHorizontalAlignment(JTextField.HORIZONTAL);
-        constraints.gridx = 0; constraints.gridy = 3; constraints.gridwidth = 4; main_frame.add(error_bar, constraints);
+        error_bar.setPreferredSize(new Dimension(255, error_bar.getPreferredSize().height)); 
+        error_bar.setBackground(Color.RED); 
+        error_bar.setEnabled(false); 
+        error_bar.setHorizontalAlignment(JTextField.HORIZONTAL);
+        constraints.gridx = 0; 
+        constraints.gridy = 3; 
+        constraints.gridwidth = 4; 
+        main_frame.add(error_bar, constraints);
 
-        create_maze_btn.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { try{Maze(Integer.parseInt(rows_field.getText()),Integer.parseInt(cols_field.getText())); error_bar.setText("");} catch(Exception ex) {error_bar.setText("ERROR: Invalid Input");} } });
-        exit_btn.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { try{maze_frame.dispose();} catch(Exception ex) {} main_frame.dispose();} });
+        create_maze_btn.addActionListener(new ActionListener() 
+        { 
+            @Override public void actionPerformed(ActionEvent e) 
+            { 
+                try
+                {
+                    Maze(Integer.parseInt(rows_field.getText()), Integer.parseInt(cols_field.getText())); 
+                    error_bar.setText("");
+                } 
+                catch(Exception ex) { error_bar.setText("ERROR: Invalid Input"); } 
+            } 
+        });
+        exit_btn.addActionListener(new ActionListener() 
+        {
+            @Override public void actionPerformed(ActionEvent e) 
+            { 
+                try { maze_frame.dispose(); } catch(Exception ex) {} 
+                main_frame.dispose();
+            } 
+        });
 
         main_frame.pack(); 
         main_frame.setVisible(true);
@@ -81,16 +123,22 @@ public class Maze_solver
 
     private void Maze(final int num_rows, final int num_cols) throws Exception
     {
-        if(num_cols < 1 || num_rows < 1) {throw new Exception();}
-        else if(num_cols*num_rows < 2) {throw new Exception();}
+        GridBagConstraints constraints = new GridBagConstraints();
 
-        try {maze_frame.dispose();} catch(Exception ex) {}
-        maze_frame = new JFrame("Maze Solver"); maze_frame.setIconImage(main_frame.getIconImage());
-        maze_frame.setLayout(new GridBagLayout()); GridBagConstraints constraints = new GridBagConstraints();
+        if(num_cols < 1 || num_rows < 1) { throw new Exception(); }
+        else if(num_cols*num_rows < 2) { throw new Exception(); }
 
-        current_user_color_selection = path_color; shortest_path_enabled = false;
+        try { maze_frame.dispose(); } catch(Exception ex) {}
+        maze_frame = new JFrame("Maze Solver"); 
+        maze_frame.setIconImage(main_frame.getIconImage());
+        maze_frame.setLayout(new GridBagLayout());
 
-        maze_grid_btn = new JButton[num_rows][num_cols]; Dimension preferred_dim = new Dimension(30,30);
+        current_user_color_selection = path_color; 
+        shortest_path_enabled = false;
+
+        maze_grid_btn = new JButton[num_rows][num_cols]; 
+        Dimension preferred_dim = new Dimension(30, 30);
+
         for(int i = 0; i < maze_grid_btn.length; ++i) 
         {
             constraints.gridy = i;
@@ -105,7 +153,7 @@ public class Maze_solver
                 else if(i == num_rows-1)
                 {
                     if(j == 0) { constraints.insets = new Insets(0,20,20,0); }
-                    else if(j == num_cols-1) {constraints.insets = new Insets(0,0,20,20);}
+                    else if(j == num_cols-1) { constraints.insets = new Insets(0,0,20,20); }
                     else { constraints.insets = new Insets(0,0,20,0); }
                 }
                 else if(j == 0) { constraints.insets = new Insets(0,20,0,0); }
@@ -117,15 +165,29 @@ public class Maze_solver
                 JButton temp_template_btn = new JButton();
                 temp_template_btn.setPreferredSize(preferred_dim);
                 temp_template_btn.setBackground(current_user_color_selection);
-                temp_template_btn.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { if(is_btn_bg_color_enabled) {temp_template_btn.setBackground(current_user_color_selection);} } });
+                temp_template_btn.addActionListener(new ActionListener() 
+                { 
+                    @Override public void actionPerformed(ActionEvent e) 
+                    { 
+                        if(is_btn_bg_color_enabled) { temp_template_btn.setBackground(current_user_color_selection); } 
+                    } 
+                });
 
                 maze_grid_btn[i][j] = temp_template_btn;
                 maze_frame.add(maze_grid_btn[i][j], constraints);
             }
         }
         
-        maze_frame_error_bar = new JTextField(); maze_frame_error_bar.setBackground(Color.RED); maze_frame_error_bar.setEnabled(false); maze_frame_error_bar.setHorizontalAlignment(JTextField.CENTER); constraints.insets = new Insets(10,10,10,10);
-        constraints.gridy = num_rows+1; constraints.gridx = 1; constraints.gridwidth = num_cols; maze_frame_error_bar.setPreferredSize(new Dimension(preferred_dim.width*num_cols, maze_frame_error_bar.getPreferredSize().height)); maze_frame.add(maze_frame_error_bar, constraints);
+        maze_frame_error_bar = new JTextField(); 
+        maze_frame_error_bar.setBackground(Color.RED); 
+        maze_frame_error_bar.setEnabled(false); 
+        maze_frame_error_bar.setHorizontalAlignment(JTextField.CENTER); 
+        constraints.insets = new Insets(10,10,10,10);
+        constraints.gridy = num_rows+1; 
+        constraints.gridx = 1; 
+        constraints.gridwidth = num_cols; 
+        maze_frame_error_bar.setPreferredSize(new Dimension(preferred_dim.width*num_cols, maze_frame_error_bar.getPreferredSize().height)); 
+        maze_frame.add(maze_frame_error_bar, constraints);
 
         JMenuBar maze_frame_menu_bar = new JMenuBar();
         stop_btn = new JButton("STOP"); stop_btn.setBackground(stop_color); stop_btn.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) { current_user_color_selection = stop_color; } });
@@ -206,7 +268,8 @@ public class Maze_solver
         {
             if((ShortestPath.size() == 0 || ShortestPath.size() > Path.size())) { ShortestPath = new ArrayList<Dimension>(Path); } 
             if(ShortestPath.size() == shortestDistance(stop_btn_location.get(0),stop_btn_location.get(stop_btn_location.size()-1))) {search_flag = false;}
-            Path.remove(D); return; 
+            Path.remove(D);
+            return; 
         }
 
         /*
@@ -298,5 +361,3 @@ public class Maze_solver
         return temp_dim_arr;
     }
 }
-
-

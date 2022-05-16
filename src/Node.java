@@ -1,3 +1,4 @@
+package src;
 import java.awt.Dimension;
 
 public class Node 
@@ -18,5 +19,6 @@ public class Node
     public void setBottom(final Dimension D) {Bottom = D;}
     public void setRight(final Dimension D) {Right = D;}
 
-    public boolean compareNode(final Node passed_node) { return (Center == passed_node.Center && Top == passed_node.Top && Left == passed_node.Left && Bottom == passed_node.Bottom && Right == passed_node.Right) ? (true) : (false); }
+    public boolean compareNode(final Node passed_node) 
+        { return (Center == passed_node.Center && Top == passed_node.Top && Left == passed_node.Left && Bottom == passed_node.Bottom && Right == passed_node.Right) ? (true) : (false); }
 }
